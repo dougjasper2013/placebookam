@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">PlaceBook</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="google_maps_key"
+        templateMergeStrategy="preserve"
+        translatable="false">
+        AIza5sD-_G2dq7PjafW-Ad4pKpU5a</string>
 </resources>
