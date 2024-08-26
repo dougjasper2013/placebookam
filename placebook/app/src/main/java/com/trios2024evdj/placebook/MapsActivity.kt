@@ -8,6 +8,7 @@ import com.google.android.gms.location.LocationServices
 import android.Manifest
 import android.content.pm.PackageManager
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -56,6 +57,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         getCurrentLocation()
+
+        mMap.setOnPoiClickListener {
+            Toast.makeText(this, it.name, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun setupLocationClient() {
@@ -113,7 +118,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //                    mMap.addMarker(MarkerOptions().position(latLng)
 //                        .title("You are here!")
 //                    )
-                    val update = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f)
+                    val update = CameraUpdateFactory.newLatLngZoom(latLng, 14.0f)
                     mMap.moveCamera(update)
                 }
                 else
