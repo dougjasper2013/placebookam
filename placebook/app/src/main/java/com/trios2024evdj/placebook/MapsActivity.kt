@@ -27,7 +27,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
-import kotlinx.coroutines.handleCoroutineException
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 

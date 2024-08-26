@@ -37,6 +37,8 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+
 }
 
 dependencies {
@@ -46,8 +48,9 @@ dependencies {
     implementation(libs.material)
     // implementation(libs.play.services.maps)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.play.services)
     implementation(libs.places)
+    implementation(libs.support.v13)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
