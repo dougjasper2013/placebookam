@@ -14,6 +14,8 @@ playServices = "12.0.1"
 places = "3.5.0"
 legacySupportV13 = "1.0.0"
 supportV13 = "28.0.0"
+roomCommon = "2.6.1"
+roomKtx = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,6 +30,8 @@ play-services = { group = "com.google.android.gms", name = "play-services", vers
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
 androidx-legacy-support-v13 = { group = "androidx.legacy", name = "legacy-support-v13", version.ref = "legacySupportV13" }
 support-v13 = { group = "com.android.support", name = "support-v13", version.ref = "supportV13" }
+androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
