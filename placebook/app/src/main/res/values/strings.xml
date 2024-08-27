@@ -4,5 +4,5 @@
     <string name="google_maps_key"
         templateMergeStrategy="preserve"
         translatable="false">
-        NoKey</string>
+        YOUR_API_KEY</string>
 </resources>
