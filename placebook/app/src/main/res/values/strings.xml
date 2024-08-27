@@ -5,4 +5,5 @@
         templateMergeStrategy="preserve"
         translatable="false">
         YOUR_API_KEY</string>
+    <string name="bookmark_image">Bookmark image</string>
 </resources>
