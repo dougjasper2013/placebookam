@@ -27,6 +27,15 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.trios2024evdj.placebook.R
 import com.trios2024evdj.placebook.adapter.BookmarkInfoWindowAdapter
+import com.trios2024evdj.placebook.viewmodel.MapsViewModel
+import com.trios2024evdj.placebook.db.PlaceBookDatabase
+
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -41,10 +50,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMapsBinding
 
+    private val mapsViewModel by viewModels<MapsViewModel>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         binding = ActivityMapsBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -145,7 +159,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .title(place.name)
             .snippet(place.phoneNumber)
         )
-        marker?.tag = photo
+        marker?.tag = PlaceInfo(place, photo)
+    }
+
+    private fun handleInfoWindowClick(marker: Marker) {
+        val placeInfo = (marker.tag as PlaceInfo)
+        if( placeInfo.place != null) {
+            GlobalScope.launch {
+                mapsViewModel.addBookmarkFromPlace(placeInfo.place,
+                    placeInfo.image)
+            }
+//            mapsViewModel.addBookmarkFromPlace(placeInfo.place,
+//                placeInfo.image)
+        }
+        marker.remove()
     }
 
 
@@ -162,14 +189,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        mMap.setInfoWindowAdapter(BookmarkInfoWindowAdapter(this))
+        //mMap.setInfoWindowAdapter(BookmarkInfoWindowAdapter(this))
 
+        setupMapListeners()
+        createBookmarkMarkerObserver()
 
         getCurrentLocation()
 
-        mMap.setOnPoiClickListener {
+        //mMap.setOnPoiClickListener {
             // Toast.makeText(this, it.name, Toast.LENGTH_LONG).show()
+        //    displayPoi(it)
+        //}
+    }
+
+    private fun setupMapListeners() {
+        mMap.setInfoWindowAdapter(BookmarkInfoWindowAdapter(this))
+        mMap.setOnPoiClickListener {
             displayPoi(it)
+        }
+        mMap.setOnInfoWindowClickListener {
+            handleInfoWindowClick(it)
         }
     }
 
@@ -264,5 +303,41 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
+
+    private fun addPlaceMarker(
+        bookmark: MapsViewModel.BookmarkMarkerView): Marker? {
+
+        val marker = mMap.addMarker(MarkerOptions()
+            .position(bookmark.location)
+            .icon(BitmapDescriptorFactory.defaultMarker(
+                BitmapDescriptorFactory.HUE_AZURE))
+            .alpha(0.8f))
+
+        marker.tag = bookmark
+
+        return marker
+    }
+
+    private fun displayAllBookmarks(
+        bookmarks: List<MapsViewModel.BookmarkMarkerView>) {
+        bookmarks.forEach { addPlaceMarker(it) }
+    }
+
+    private fun createBookmarkMarkerObserver() {
+        // 1
+        mapsViewModel.getBookmarkMarkerViews()?.observe(
+            this, {
+                // 2
+                mMap.clear()
+                // 3
+                it?.let {
+                    displayAllBookmarks(it)
+                }
+            })
+    }
+
+
+    class PlaceInfo(val place: Place? = null,
+        val image: Bitmap? = null)
 
 }

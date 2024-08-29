@@ -26,4 +26,5 @@ class BookmarkRepo(context: Context) {
         get() {
             return bookmarkDao.loadAll()
         }
+
 }
